@@ -8,6 +8,7 @@ from rango.models import Category, Page
 
 
 def populate():
+    # 先创建Category对象，然后用于添加Page
     python_cat = add_cat('Python',128,64)
     Category.objects.filter(name="Python").update(views=128, likes=64)
     Category.objects.filter(name="Django").update(views=64, likes=32)
