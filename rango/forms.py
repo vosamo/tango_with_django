@@ -44,7 +44,7 @@ class PageForm(forms.ModelForm):
         return cleaned_data
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(help_text='User name', label='帐号：')
+    username = forms.CharField(help_text='User name', label='帐号：', error_messages={"required": "用户名不能为空",})
     email = forms.CharField(help_text='Email', label='邮箱：')
     password = forms.CharField(widget=forms.PasswordInput(), label='密码：')
 
