@@ -1,3 +1,4 @@
+# coding:utf-8
 from django.shortcuts import render
 from django.shortcuts import redirect
 from rango.models import Category, Page
@@ -169,7 +170,8 @@ def user_login(request):
         else:
             # Bad login details were provided. So we can't log the user in.
             print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            login_error = "用户名或密码错误，请重新输入"
+            return render(request, 'rango/login.html', {'login_error': login_error})
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.
