@@ -52,6 +52,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'tango_with_django.urls'
+LOGIN_URL = '/rango/login/'
 
 TEMPLATES = [
     {
