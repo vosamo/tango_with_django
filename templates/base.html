@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Rango-{% block title %}How to tango with django?{% endblock %}</title>
+</head>
+
+<body>
+<div>
+    <!--Page specific content goes here-->
+    {% block body_block %}This is body_block's default content.{% endblock %}
+    <hr>
+</div>
+
+<div>
+    <ul>
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'logout' %}">注销</a></li>
+        <li><a href="{% url 'add_category' %}">Add a New Category</a></li>
+    {% else %}
+        <li><a href="{% url 'register' %}">注册</a></li>
+        <li><a href="{% url 'login' %}">登录</a></li>
+    {% endif %}
+
+        <li><a href="{% url 'about' %}">关于</a></li>
+    </ul>
+</div>
+
+</body>
+</html>
