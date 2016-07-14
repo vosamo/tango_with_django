@@ -18,31 +18,29 @@ def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     context_dict = {'categories': category_list}
 
-    visits = int(request.COOKIES.get('visits', '1'))
+    visits = request.session.get('visits')
+    if not visits:
+        visits = 1
     reset_last_visit_time = False
 
-    # Render the response and send it back!
-    response = render(request, 'rango/index.html', context_dict)
-
-    if 'last_visit' in request.COOKIES:
-        last_visit = request.COOKIES['last_visit']
+    last_visit = request.session.get('last_visit')
+    if last_visit:
         last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
-        # If it's been more than a day since the last visit...
         if (datetime.now()-last_visit_time).seconds > 5:
             visits += 1
-            # ...and flag that the cookie last visit needs to be updated
             reset_last_visit_time = True
     else:
         reset_last_visit_time = True
 
-    context_dict['visits'] = visits
-    response = render(request, 'rango/index.html', context_dict)
-
     if reset_last_visit_time:
-        response.set_cookie('visits', visits)
-        response.set_cookie('last_visit', datetime.now())
+        request.session['last_visit'] = str(datetime.now())
+        request.session['visits'] = visits
 
+    context_dict['visits'] = visits
+
+    response = render(request, 'rango/index.html', context_dict)
     return response
+
 
 def category(request, category_name_slug):
     context_dict = {}
@@ -219,4 +217,5 @@ def user_logout(request):
 #     return HttpResponse("Since you're logged in, you can see this text!")
 
 def about(request):
-    return render(request, 'about.html')
+    count = request.session.get('visits', 0)
+    return render(request, 'about.html', {'visits': count})
